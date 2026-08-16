@@ -7,7 +7,7 @@ CORE_COLUMNS = [
     "id", "loan_amnt", "term", "int_rate", "installment",
     "grade", "sub_grade", "emp_length", "home_ownership", "annual_inc",
     "verification_status", "issue_d", "loan_status", "purpose",
-    "zip_code", "addr_state", "dti", "delinq_2yrs", "earliest_cr_line",
+     "dti", "delinq_2yrs", "earliest_cr_line",
     "fico_range_low", "fico_range_high", "inq_last_6mths",
     "mths_since_last_delinq", "mths_since_last_record", "open_acc",
     "pub_rec", "revol_bal", "revol_util", "total_acc",
@@ -45,11 +45,11 @@ def stratified_sample(df, n=SAMPLE_SIZE):
     if len(df) <= n:
         return df
     frac = n / len(df)
-    return (
-        df.groupby("loan_status", group_keys=False)
-        .apply(lambda g: g.sample(frac=frac, random_state=RANDOM_STATE))
-        .reset_index(drop=True)
-    )
+    parts = [
+        group.sample(frac=frac, random_state=RANDOM_STATE)
+        for _, group in df.groupby("loan_status")
+    ]
+    return pd.concat(parts, ignore_index=True)
 
 
 def main():
