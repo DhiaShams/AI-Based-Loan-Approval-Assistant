@@ -1,279 +1,194 @@
 # AI-Based Loan Approval Assistant
 
-## 📌 Overview
+## Project title
 
-The **AI-Based Loan Approval Assistant** is a Python-based machine learning project that helps make loan assessment more **consistent, explainable, and data-driven**.
+AI-Based Loan Approval Assistant
 
-The system uses historical **Lending Club loan data** to learn patterns between an applicant's financial profile and their loan repayment outcome. It predicts the **probability of loan default** and provides a recommendation such as **Approve, Manual Review, or Reject**.
+## Problem statement
 
-Unlike a simple rule-based loan system, the project also explains **why** a particular applicant was considered risky or low-risk using **Explainable AI (SHAP/LIME)** techniques.
+The project uses historical Lending Club loan data to predict the probability that a borrower will default on a loan. The system must help a lender triage applications using default risk rather than a direct historical approval label, because Lending Club data records repayment outcomes and does not provide a clean binary approval target that matches a future lending decision.
 
-The project additionally performs a **fairness analysis** to identify potential differences in model performance across demographic groups.
+## Solution
 
----
+The project follows a standard ML workflow: local raw data is filtered, cleaned, and feature engineered; models are trained with class imbalance handling; the best model is stored for inference; default probability is converted into a recommendation using configurable threshold logic; SHAP explains the prediction; fairness is audited across groups; and a Streamlit dashboard presents the results.
 
-## 🎯 Objectives
-
-* Predict the probability of loan default.
-* Reduce inconsistent manual loan assessment.
-* Handle class imbalance in loan outcomes.
-* Evaluate models using precision, recall, F1-score, and ROC-AUC.
-* Explain individual loan predictions using SHAP/LIME.
-* Analyze potential fairness issues across demographic groups.
-* Provide an easy-to-use web interface using Streamlit.
-
----
-
-## 🔄 Project Workflow
+## Architecture
 
 ```text
-Lending Club Dataset
-        ↓
-Data Collection
-        ↓
-Data Cleaning & Preprocessing
-        ↓
-Feature Engineering
-        ↓
-Handle Class Imbalance
-        ↓
-Train Machine Learning Models
-        ↓
-Model Evaluation
-        ↓
-Select Best Model
-        ↓
-Default Risk Prediction
-        ↓
-SHAP/LIME Explanation
-        ↓
-Fairness Analysis
-        ↓
-Streamlit Dashboard
+RAW DATA
+  ↓
+FILTERING
+  ↓
+CLEANING / FEATURE ENGINEERING
+  ↓
+TRAIN / VALIDATION / TEST SPLIT
+  ↓
+PREPROCESSING PIPELINE
+  ↓
+MODEL
+  ↓
+DEFAULT PROBABILITY
+  ↓
+DECISION ENGINE
+  ↓
+SHAP
+  ↓
+STREAMLIT
 ```
 
----
+## Dataset information
 
-## 📊 Dataset
+This project uses the Lending Club dataset from Kaggle, consisting of historical loan records with financial, credit, and repayment metadata. The ML target is `default_flag`, where:
 
-The project uses the **Lending Club loan dataset** available on Kaggle.
+- `0` = Fully Paid
+- `1` = Charged Off
 
-**Dataset:** Lending Club Loan Data
-**Source:** Kaggle – wordsforthewise/lending-club
+The model predicts default risk, not whether a loan was historically approved.
 
-The dataset contains historical loan information such as:
+## Why dataset is not stored in GitHub
 
-* Annual income
-* Loan amount
-* Employment length
-* Credit/FICO information
-* Debt-to-income ratio
-* Home ownership
-* Loan purpose
-* Credit history
-* Loan status
+The raw Lending Club CSV is intentionally excluded from GitHub because it is large and is not part of the code repository. This repository keeps only the folder structure and scripts needed to work with the local dataset.
 
-### Target Variable
+## How to download the dataset
 
-The `loan_status` column is processed to create the prediction target.
+1. Visit the Kaggle Lending Club dataset page.
+2. Download the CSV file locally.
+3. Place it at:
+   `data/raw/loan_data.csv`
+4. Keep the file on your local machine and do not commit it to GitHub.
 
-For the initial binary classification:
+## Required file location
+
+The project expects the local CSV at:
 
 ```text
-Fully Paid    → 0
-Charged Off   → 1
+data/raw/loan_data.csv
 ```
 
-Where:
+## Installation instructions
 
-* `0` = Loan was fully paid
-* `1` = Loan was charged off/defaulted
-
-Other loan statuses such as `Current` need to be handled carefully because the final repayment outcome may not yet be known.
-
----
-
-## 🧠 Machine Learning
-
-Multiple machine learning algorithms can be evaluated:
-
-### 1. Logistic Regression
-
-Used as a baseline model because it is simple and relatively interpretable.
-
-### 2. Random Forest
-
-Used to capture nonlinear relationships between financial features.
-
-### 3. XGBoost
-
-Used as a powerful gradient-boosting model for structured/tabular data.
-
-The models will be compared using:
-
-* Precision
-* Recall
-* F1-score
-* ROC-AUC
-* Confusion Matrix
-
-The final model will be selected based on performance and the project's focus on reducing costly **false approvals**.
-
----
-
-## ⚖️ Class Imbalance
-
-Loan default datasets commonly contain significantly more successfully repaid loans than defaulted loans.
-
-For example:
-
-```text
-Fully Paid       85%
-Charged Off      15%
+```bash
+python -m pip install -r requirements.txt
 ```
 
-This imbalance can cause a model to favor the majority class.
+## Data pipeline commands
 
-The project will investigate techniques such as:
-
-* Class weighting
-* SMOTE
-* Oversampling/undersampling
-
-The chosen technique will be evaluated based on its effect on minority-class recall and overall model performance.
-
----
-
-## 🔍 Explainable AI
-
-The project uses **SHAP and/or LIME** to explain individual predictions.
-
-Instead of simply displaying:
-
-```text
-Loan Recommendation: REJECT
+```bash
+python src/data/filter_sample.py
+python src/data/clean.py
 ```
 
-the system can provide:
+## Model training commands
 
-```text
-Default Probability: 72%
-
-Factors increasing risk:
-- High debt-to-income ratio
-- Lower credit score
-- Large loan amount
-
-Factors reducing risk:
-- Stable employment
-- Strong repayment history
+```bash
+python src/model/train.py
+python src/model/evaluate.py
 ```
 
-This makes the prediction easier for a loan officer or applicant to understand.
+## Streamlit command
 
----
-
-## ⚖️ Fairness Analysis
-
-The system will evaluate whether model performance differs across relevant demographic groups.
-
-Metrics may include:
-
-* Precision
-* Recall
-* False-positive rate
-* False-negative rate
-* True-positive rate
-* Approval/recommendation rates
-
-The purpose is to identify potential disparities and understand whether the model requires further investigation or mitigation.
-
----
-
-## 🖥️ Streamlit Dashboard
-
-The final application will provide a simple interface where a user can enter applicant information.
-
-### Example Input
-
-```text
-Annual Income       : ₹60,000
-Loan Amount         : ₹5,00,000
-Employment Length   : 5 years
-Credit Score        : 720
-Debt-to-Income      : 15%
-Home Ownership      : RENT
-Loan Purpose        : Personal
+```bash
+streamlit run app/app.py
 ```
 
-### Example Output
+## Folder structure
 
 ```text
------------------------------------
-       LOAN RISK ASSESSMENT
------------------------------------
-
-Default Probability : 18%
-Risk Level          : LOW
-
-Recommendation      : APPROVE
-
------------------------------------
-WHY?
------------------------------------
-
-Positive Factors:
-✓ Good credit score
-✓ Stable employment
-✓ Manageable debt
-
-Risk Factors:
-! Relatively high loan amount
-```
-
----
-
-## 🛠️ Technologies
-
-| Component            | Technology          |
-| -------------------- | ------------------- |
-| Programming Language | Python              |
-| Data Processing      | Pandas, NumPy       |
-| Visualization        | Matplotlib, Seaborn |
-| Machine Learning     | Scikit-learn        |
-| Gradient Boosting    | XGBoost             |
-| Imbalance Handling   | imbalanced-learn    |
-| Explainable AI       | SHAP / LIME         |
-| Dashboard            | Streamlit           |
-| Model Storage        | Joblib              |
-
----
-
-## 📁 Project Structure
-
-```text
-loan-approval-ai/
-│
+AI-BASED-LOAN-APPROVAL-ASSISTANT/
+├── app/
+│   ├── app.py
+│   ├── components/
+│   └── pages/
 ├── data/
-│   └── accepted_2007_to_2018Q4.csv
-│
+│   ├── raw/
+│   ├── interim/
+│   └── processed/
+├── models/
 ├── notebooks/
-│   └── exploratory_analysis.ipynb
+├── reports/
+│   ├── figures/
+│   └── metrics/
+├── src/
+│   ├── data/
+│   ├── explainability/
+│   ├── fairness/
+│   ├── model/
+│   └── __init__.py
+├── tests/
+├── .gitignore
+├── README.md
+├── requirements.txt
+└── .gitkeep
+```
+
+## Team responsibilities
+
+- Data pipeline: filter and clean raw Lending Club data.
+- Model training: train and compare candidate classifiers.
+- Explainability: SHAP analysis for individual decisions.
+- Fairness: test for disparities across groups.
+- Dashboard: Streamlit assessment and reporting experience.
+
+## ML methodology
+
+The project uses a binary classification target (`default_flag`). Candidate models include logistic regression, random forest, and XGBoost. Training uses a stratified train/test split, and model comparison focuses on default recall, false approvals, and ROC-AUC rather than accuracy alone.
+
+## SHAP methodology
+
+SHAP values quantify how each feature pushes a prediction toward or away from default risk. The app and explainability utilities use actual model outputs to identify the features most responsible for a given applicant's risk score.
+
+## Fairness methodology
+
+Fairness is evaluated on the same held-out test dataset by comparing performance across groups using the same predictions. The code is generic and accepts `y_true`, `y_pred`, and `group_labels`. This is an audit for potential disparities, not a claim of fairness.
+
+## Limitations
+
+- The raw Kaggle CSV is not stored in the repository and must be downloaded locally.
+- Historical default data may contain survivorship or sampling biases.
+- Labeling and outcomes are based on historical repayment behavior rather than a direct approval decision.
+- Thresholds are starting values and should be reviewed by domain stakeholders before production use.
+
+## Future improvements
+
+- Add a richer applicant profile form and validation rules.
+- Tune risk thresholds using business objectives and cost trade-offs.
+- Expand fairness analysis with additional protected attributes where valid and lawful.
+- Move the model artifact and metrics to a deployment-ready pipeline.
+
+---
+
+## Data pipeline notes
+
+The repository preserves the existing Day-1 and Day-2 scripts:
+
+```bash
+python src/data/filter_sample.py
+python src/data/clean.py
+```
+
+These scripts must run against the local raw file at `data/raw/loan_data.csv` and generate output in `data/interim/` and `data/processed/` respectively.
+
+## Important disclaimer
+
+This project does not claim to directly predict historical Lending Club approval decisions. The model predicts default probability, and then a separate decision engine converts that probability into `APPROVE`, `MANUAL REVIEW`, or `REJECT`.
+
+│ └── exploratory_analysis.ipynb
 │
 ├── src/
-│   ├── preprocessing.py
-│   ├── train_model.py
-│   ├── predict.py
-│   ├── explain.py
-│   └── fairness.py
+│ ├── preprocessing.py
+│ ├── train_model.py
+│ ├── predict.py
+│ ├── explain.py
+│ └── fairness.py
 │
 ├── models/
-│   └── loan_model.pkl
+│ └── loan_model.pkl
 │
 ├── app.py
 ├── requirements.txt
 └── README.md
-```
+
+````
 
 ---
 
@@ -284,7 +199,7 @@ Clone the repository:
 ```bash
 git clone <repository-url>
 cd loan-approval-ai
-```
+````
 
 Create a virtual environment:
 
@@ -328,10 +243,10 @@ The application will open in your browser.
 
 The project aims to develop a model with strong performance on:
 
-* **Precision**
-* **Recall**
-* **F1-score**
-* **ROC-AUC**
+- **Precision**
+- **Recall**
+- **F1-score**
+- **ROC-AUC**
 
 A target of approximately **0.80+** can be used as a project benchmark, while reporting the actual test-set performance.
 
@@ -351,15 +266,15 @@ This prevents the model from learning from information that would not actually b
 
 ## 🔮 Future Enhancements
 
-* Real-time credit-risk assessment.
-* Cost-sensitive decision thresholds.
-* More advanced fairness mitigation techniques.
-* Integration with external credit-data APIs.
-* Applicant-facing explanation reports.
-* Model monitoring and drift detection.
-* Automated model retraining.
-* Cloud deployment.
-* Authentication and role-based access for loan officers.
+- Real-time credit-risk assessment.
+- Cost-sensitive decision thresholds.
+- More advanced fairness mitigation techniques.
+- Integration with external credit-data APIs.
+- Applicant-facing explanation reports.
+- Model monitoring and drift detection.
+- Automated model retraining.
+- Cloud deployment.
+- Authentication and role-based access for loan officers.
 
 ---
 
