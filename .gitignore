@@ -1,4 +1,4 @@
-# Data folders - keep folder structure but ignore large local CSVs
+# Data folders - ignore CSVs but keep folder structure visible
 data/raw/*.csv
 data/interim/*.csv
 data/processed/*.csv
@@ -6,19 +6,13 @@ data/processed/*.csv
 !data/interim/.gitkeep
 !data/processed/.gitkeep
 
-# Model artifacts
-models/*.joblib
+# Models
 models/*.pkl
-
-# Reports
-reports/figures/*.png
-reports/metrics/*.json
+models/*.joblib
 
 # Python
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
 
 # Environment / notebooks
 .env
