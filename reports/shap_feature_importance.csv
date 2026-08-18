@@ -1,0 +1,53 @@
+feature,feature_name,mean_abs_shap
+sub_grade_encoded,Credit Sub-Grade,0.3833694
+term,Loan Term,0.19811872
+grade_encoded,Credit Grade,0.13548267
+dti,Debt-to-Income Ratio,0.113846004
+annual_inc,Annual Income,0.09705173
+fico_range_low,FICO Score,0.09336502
+open_acc,Open Credit Accounts,0.091069885
+mort_acc,Mortgage Accounts,0.08525778
+tot_cur_bal,Current Credit Balance,0.07667949
+loan_amnt,Loan Amount,0.07558878
+inq_last_6mths,Recent Credit Inquiries,0.0684553
+total_acc,Total Credit Accounts,0.0655292
+revol_util,Credit Utilization,0.061110914
+int_rate,Interest Rate,0.060219903
+revol_bal,Revolving Credit Balance,0.059692528
+home_ownership_MORTGAGE,Home Ownership: Mortgage,0.047773
+installment,Monthly Installment,0.0438945
+initial_list_status_w,Initial Listing Status,0.043027367
+emp_length_missing,Missing Employment Information,0.04235735
+credit_history_years,Credit History Length,0.03758024
+verification_status_Source Verified,Verification: Source Verified,0.031015385
+mths_since_last_delinq,Months Since Last Delinquency,0.029084155
+verification_status_Verified,Verification: Verified,0.026034767
+fico_range_high,FICO Score,0.025669465
+emp_length,Employment Length,0.024320964
+home_ownership_RENT,Home Ownership: Rent,0.021341842
+purpose_credit_card,Purpose: Credit Card,0.021186104
+delinq_2yrs,Recent Delinquencies,0.016902506
+mths_since_last_record,Months Since Last Public Record,0.015050041
+tot_coll_amt,Total Collection Amount,0.012517018
+application_type_Joint App,Application Type: Joint,0.0093329195
+purpose_debt_consolidation,Purpose: Debt Consolidation,0.007986
+purpose_other,Purpose: Other,0.00652493
+home_ownership_OWN,Home Ownership: Own,0.0041878545
+purpose_home_improvement,Purpose: Home Improvement,0.003893843
+pub_rec,Public Credit Records,0.0037245944
+purpose_house,Purpose: House,0.0032516308
+tax_liens,Tax Liens,0.0031111853
+purpose_small_business,Purpose: Small Business,0.0030696394
+pub_rec_bankruptcies,Public Record Bankruptcies,0.0018070231
+purpose_moving,Purpose: Moving,0.0017098909
+purpose_wedding,Purpose: Wedding,0.0015387108
+purpose_medical,Purpose: Medical,0.0013992287
+purpose_major_purchase,Purpose: Major Purchase,0.0012771293
+mths_since_last_delinq_missing,Missing Delinquency Information,0.0012369292
+acc_now_delinq,Current Delinquencies,0.0008766608
+mths_since_last_record_missing,Missing Public Record Information,0.000795288
+purpose_vacation,Purpose: Vacation,0.00053031987
+purpose_renewable_energy,Purpose: Renewable Energy,0.00012301771
+home_ownership_NONE,Home Ownership: None,0.0
+home_ownership_OTHER,Home Ownership: Other,0.0
+purpose_educational,Purpose: Educational,0.0
