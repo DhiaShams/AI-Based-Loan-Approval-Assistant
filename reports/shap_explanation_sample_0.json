@@ -1,0 +1,686 @@
+{
+    "prediction": {
+        "class": 0,
+        "label": "NON-DEFAULT",
+        "default_probability": 0.30117884278297424,
+        "default_probability_percent": 30.12
+    },
+    "risk_factors": [
+        {
+            "feature": "dti",
+            "name": "Debt-to-Income Ratio",
+            "value": 32.37,
+            "shap_value": 0.14767105877399445,
+            "impact": "increases_risk",
+            "status": "attention"
+        },
+        {
+            "feature": "fico_range_low",
+            "name": "FICO Score",
+            "value": 665.0,
+            "shap_value": 0.14688536524772644,
+            "impact": "increases_risk",
+            "status": "attention"
+        },
+        {
+            "feature": "open_acc",
+            "name": "Open Credit Accounts",
+            "value": 18.0,
+            "shap_value": 0.09836900979280472,
+            "impact": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "verification_status_Verified",
+            "name": "Verification: Verified",
+            "value": 1.0,
+            "shap_value": 0.048178087919950485,
+            "impact": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "fico_range_high",
+            "name": "FICO Score",
+            "value": 669.0,
+            "shap_value": 0.047552723437547684,
+            "impact": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "annual_inc",
+            "name": "Annual Income",
+            "value": 80000.0,
+            "shap_value": 0.04509146511554718,
+            "impact": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "int_rate",
+            "name": "Interest Rate",
+            "value": 10.75,
+            "shap_value": 0.020239803940057755,
+            "impact": "increases_risk",
+            "status": "attention"
+        },
+        {
+            "feature": "loan_amnt",
+            "name": "Loan Amount",
+            "value": 17800.0,
+            "shap_value": 0.018527334555983543,
+            "impact": "increases_risk",
+            "status": "attention"
+        },
+        {
+            "feature": "application_type_Joint App",
+            "name": "Application Type: Joint",
+            "value": 0.0,
+            "shap_value": 0.009070558473467827,
+            "impact": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "delinq_2yrs",
+            "name": "Recent Delinquencies",
+            "value": 1.0,
+            "shap_value": 0.007416398264467716,
+            "impact": "increases_risk",
+            "status": "attention"
+        }
+    ],
+    "protective_factors": [
+        {
+            "feature": "tot_cur_bal",
+            "name": "Current Credit Balance",
+            "value": 440810.0,
+            "shap_value": -0.2767937183380127,
+            "impact": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "sub_grade_encoded",
+            "name": "Credit Sub-Grade",
+            "value": 9.0,
+            "shap_value": -0.2290612757205963,
+            "impact": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "term",
+            "name": "Loan Term",
+            "value": 36.0,
+            "shap_value": -0.18039429187774658,
+            "impact": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "total_acc",
+            "name": "Total Credit Accounts",
+            "value": 48.0,
+            "shap_value": -0.13417717814445496,
+            "impact": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "purpose_credit_card",
+            "name": "Purpose: Credit Card",
+            "value": 1.0,
+            "shap_value": -0.10836588591337204,
+            "impact": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "grade_encoded",
+            "name": "Credit Grade",
+            "value": 1.0,
+            "shap_value": -0.07870758324861526,
+            "impact": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "inq_last_6mths",
+            "name": "Recent Credit Inquiries",
+            "value": 0.0,
+            "shap_value": -0.06878924369812012,
+            "impact": "decreases_risk",
+            "status": "good"
+        },
+        {
+            "feature": "home_ownership_MORTGAGE",
+            "name": "Home Ownership: Mortgage",
+            "value": 1.0,
+            "shap_value": -0.06544218212366104,
+            "impact": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "initial_list_status_w",
+            "name": "Initial Listing Status",
+            "value": 0.0,
+            "shap_value": -0.06125069037079811,
+            "impact": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "mort_acc",
+            "name": "Mortgage Accounts",
+            "value": 2.0,
+            "shap_value": -0.03911779075860977,
+            "impact": "decreases_risk",
+            "status": "normal"
+        }
+    ],
+    "areas_needing_attention": [
+        {
+            "feature": "dti",
+            "name": "Debt-to-Income Ratio",
+            "value": 32.37,
+            "shap_value": 0.14767105877399445,
+            "status": "attention"
+        },
+        {
+            "feature": "fico_range_low",
+            "name": "FICO Score",
+            "value": 665.0,
+            "shap_value": 0.14688536524772644,
+            "status": "attention"
+        },
+        {
+            "feature": "int_rate",
+            "name": "Interest Rate",
+            "value": 10.75,
+            "shap_value": 0.020239803940057755,
+            "status": "attention"
+        },
+        {
+            "feature": "loan_amnt",
+            "name": "Loan Amount",
+            "value": 17800.0,
+            "shap_value": 0.018527334555983543,
+            "status": "attention"
+        },
+        {
+            "feature": "delinq_2yrs",
+            "name": "Recent Delinquencies",
+            "value": 1.0,
+            "shap_value": 0.007416398264467716,
+            "status": "attention"
+        },
+        {
+            "feature": "revol_util",
+            "name": "Credit Utilization",
+            "value": 69.0,
+            "shap_value": -0.0073881992138922215,
+            "status": "high_risk"
+        }
+    ],
+    "feature_contributions": [
+        {
+            "feature": "tot_cur_bal",
+            "name": "Current Credit Balance",
+            "value": 440810.0,
+            "shap_value": -0.2767937183380127,
+            "absolute_shap": 0.2767937183380127,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "sub_grade_encoded",
+            "name": "Credit Sub-Grade",
+            "value": 9.0,
+            "shap_value": -0.2290612757205963,
+            "absolute_shap": 0.2290612757205963,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "term",
+            "name": "Loan Term",
+            "value": 36.0,
+            "shap_value": -0.18039429187774658,
+            "absolute_shap": 0.18039429187774658,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "dti",
+            "name": "Debt-to-Income Ratio",
+            "value": 32.37,
+            "shap_value": 0.14767105877399445,
+            "absolute_shap": 0.14767105877399445,
+            "direction": "increases_risk",
+            "status": "attention"
+        },
+        {
+            "feature": "fico_range_low",
+            "name": "FICO Score",
+            "value": 665.0,
+            "shap_value": 0.14688536524772644,
+            "absolute_shap": 0.14688536524772644,
+            "direction": "increases_risk",
+            "status": "attention"
+        },
+        {
+            "feature": "total_acc",
+            "name": "Total Credit Accounts",
+            "value": 48.0,
+            "shap_value": -0.13417717814445496,
+            "absolute_shap": 0.13417717814445496,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "purpose_credit_card",
+            "name": "Purpose: Credit Card",
+            "value": 1.0,
+            "shap_value": -0.10836588591337204,
+            "absolute_shap": 0.10836588591337204,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "open_acc",
+            "name": "Open Credit Accounts",
+            "value": 18.0,
+            "shap_value": 0.09836900979280472,
+            "absolute_shap": 0.09836900979280472,
+            "direction": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "grade_encoded",
+            "name": "Credit Grade",
+            "value": 1.0,
+            "shap_value": -0.07870758324861526,
+            "absolute_shap": 0.07870758324861526,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "inq_last_6mths",
+            "name": "Recent Credit Inquiries",
+            "value": 0.0,
+            "shap_value": -0.06878924369812012,
+            "absolute_shap": 0.06878924369812012,
+            "direction": "decreases_risk",
+            "status": "good"
+        },
+        {
+            "feature": "home_ownership_MORTGAGE",
+            "name": "Home Ownership: Mortgage",
+            "value": 1.0,
+            "shap_value": -0.06544218212366104,
+            "absolute_shap": 0.06544218212366104,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "initial_list_status_w",
+            "name": "Initial Listing Status",
+            "value": 0.0,
+            "shap_value": -0.06125069037079811,
+            "absolute_shap": 0.06125069037079811,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "verification_status_Verified",
+            "name": "Verification: Verified",
+            "value": 1.0,
+            "shap_value": 0.048178087919950485,
+            "absolute_shap": 0.048178087919950485,
+            "direction": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "fico_range_high",
+            "name": "FICO Score",
+            "value": 669.0,
+            "shap_value": 0.047552723437547684,
+            "absolute_shap": 0.047552723437547684,
+            "direction": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "annual_inc",
+            "name": "Annual Income",
+            "value": 80000.0,
+            "shap_value": 0.04509146511554718,
+            "absolute_shap": 0.04509146511554718,
+            "direction": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "mort_acc",
+            "name": "Mortgage Accounts",
+            "value": 2.0,
+            "shap_value": -0.03911779075860977,
+            "absolute_shap": 0.03911779075860977,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "emp_length",
+            "name": "Employment Length",
+            "value": 4.0,
+            "shap_value": -0.03591202199459076,
+            "absolute_shap": 0.03591202199459076,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "emp_length_missing",
+            "name": "Missing Employment Information",
+            "value": 0.0,
+            "shap_value": -0.029203329235315323,
+            "absolute_shap": 0.029203329235315323,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "revol_bal",
+            "name": "Revolving Credit Balance",
+            "value": 11868.0,
+            "shap_value": -0.025108255445957184,
+            "absolute_shap": 0.025108255445957184,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "home_ownership_RENT",
+            "name": "Home Ownership: Rent",
+            "value": 0.0,
+            "shap_value": -0.023936785757541656,
+            "absolute_shap": 0.023936785757541656,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "int_rate",
+            "name": "Interest Rate",
+            "value": 10.75,
+            "shap_value": 0.020239803940057755,
+            "absolute_shap": 0.020239803940057755,
+            "direction": "increases_risk",
+            "status": "attention"
+        },
+        {
+            "feature": "credit_history_years",
+            "name": "Credit History Length",
+            "value": 11.665982203969884,
+            "shap_value": -0.020078903064131737,
+            "absolute_shap": 0.020078903064131737,
+            "direction": "decreases_risk",
+            "status": "good"
+        },
+        {
+            "feature": "purpose_debt_consolidation",
+            "name": "Purpose: Debt Consolidation",
+            "value": 0.0,
+            "shap_value": -0.01956123858690262,
+            "absolute_shap": 0.01956123858690262,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "installment",
+            "name": "Monthly Installment",
+            "value": 580.65,
+            "shap_value": -0.018765710294246674,
+            "absolute_shap": 0.018765710294246674,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "loan_amnt",
+            "name": "Loan Amount",
+            "value": 17800.0,
+            "shap_value": 0.018527334555983543,
+            "absolute_shap": 0.018527334555983543,
+            "direction": "increases_risk",
+            "status": "attention"
+        },
+        {
+            "feature": "verification_status_Source Verified",
+            "name": "Verification: Source Verified",
+            "value": 0.0,
+            "shap_value": -0.017130805179476738,
+            "absolute_shap": 0.017130805179476738,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "mths_since_last_record",
+            "name": "Months Since Last Public Record",
+            "value": -1.0,
+            "shap_value": -0.011588851921260357,
+            "absolute_shap": 0.011588851921260357,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "application_type_Joint App",
+            "name": "Application Type: Joint",
+            "value": 0.0,
+            "shap_value": 0.009070558473467827,
+            "absolute_shap": 0.009070558473467827,
+            "direction": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "delinq_2yrs",
+            "name": "Recent Delinquencies",
+            "value": 1.0,
+            "shap_value": 0.007416398264467716,
+            "absolute_shap": 0.007416398264467716,
+            "direction": "increases_risk",
+            "status": "attention"
+        },
+        {
+            "feature": "revol_util",
+            "name": "Credit Utilization",
+            "value": 69.0,
+            "shap_value": -0.0073881992138922215,
+            "absolute_shap": 0.0073881992138922215,
+            "direction": "decreases_risk",
+            "status": "high_risk"
+        },
+        {
+            "feature": "tot_coll_amt",
+            "name": "Total Collection Amount",
+            "value": 0.0,
+            "shap_value": -0.006874230690300465,
+            "absolute_shap": 0.006874230690300465,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "purpose_other",
+            "name": "Purpose: Other",
+            "value": 0.0,
+            "shap_value": -0.004859119188040495,
+            "absolute_shap": 0.004859119188040495,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "pub_rec",
+            "name": "Public Credit Records",
+            "value": 0.0,
+            "shap_value": -0.002456272952258587,
+            "absolute_shap": 0.002456272952258587,
+            "direction": "decreases_risk",
+            "status": "good"
+        },
+        {
+            "feature": "purpose_medical",
+            "name": "Purpose: Medical",
+            "value": 0.0,
+            "shap_value": -0.0014366835821419954,
+            "absolute_shap": 0.0014366835821419954,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "purpose_home_improvement",
+            "name": "Purpose: Home Improvement",
+            "value": 0.0,
+            "shap_value": 0.001386163872666657,
+            "absolute_shap": 0.001386163872666657,
+            "direction": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "purpose_small_business",
+            "name": "Purpose: Small Business",
+            "value": 0.0,
+            "shap_value": -0.001018263166770339,
+            "absolute_shap": 0.001018263166770339,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "home_ownership_OWN",
+            "name": "Home Ownership: Own",
+            "value": 0.0,
+            "shap_value": -0.0010174079798161983,
+            "absolute_shap": 0.0010174079798161983,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "mths_since_last_delinq",
+            "name": "Months Since Last Delinquency",
+            "value": 13.0,
+            "shap_value": -0.0010070163989439607,
+            "absolute_shap": 0.0010070163989439607,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "purpose_house",
+            "name": "Purpose: House",
+            "value": 0.0,
+            "shap_value": 0.0008924994617700577,
+            "absolute_shap": 0.0008924994617700577,
+            "direction": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "purpose_moving",
+            "name": "Purpose: Moving",
+            "value": 0.0,
+            "shap_value": -0.0008798071648925543,
+            "absolute_shap": 0.0008798071648925543,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "pub_rec_bankruptcies",
+            "name": "Public Record Bankruptcies",
+            "value": 0.0,
+            "shap_value": -0.0006941017927601933,
+            "absolute_shap": 0.0006941017927601933,
+            "direction": "decreases_risk",
+            "status": "good"
+        },
+        {
+            "feature": "tax_liens",
+            "name": "Tax Liens",
+            "value": 0.0,
+            "shap_value": -0.0006700727972202003,
+            "absolute_shap": 0.0006700727972202003,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "purpose_major_purchase",
+            "name": "Purpose: Major Purchase",
+            "value": 0.0,
+            "shap_value": -0.0006257577915675938,
+            "absolute_shap": 0.0006257577915675938,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "purpose_wedding",
+            "name": "Purpose: Wedding",
+            "value": 0.0,
+            "shap_value": 0.00045322676305659115,
+            "absolute_shap": 0.00045322676305659115,
+            "direction": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "mths_since_last_delinq_missing",
+            "name": "Missing Delinquency Information",
+            "value": 0.0,
+            "shap_value": 0.0001787380315363407,
+            "absolute_shap": 0.0001787380315363407,
+            "direction": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "acc_now_delinq",
+            "name": "Current Delinquencies",
+            "value": 0.0,
+            "shap_value": 0.00015743591939099133,
+            "absolute_shap": 0.00015743591939099133,
+            "direction": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "mths_since_last_record_missing",
+            "name": "Missing Public Record Information",
+            "value": 1.0,
+            "shap_value": 6.58378194202669e-05,
+            "absolute_shap": 6.58378194202669e-05,
+            "direction": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "purpose_renewable_energy",
+            "name": "Purpose: Renewable Energy",
+            "value": 0.0,
+            "shap_value": 6.395700620487332e-05,
+            "absolute_shap": 6.395700620487332e-05,
+            "direction": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "purpose_vacation",
+            "name": "Purpose: Vacation",
+            "value": 0.0,
+            "shap_value": 8.632719982415438e-06,
+            "absolute_shap": 8.632719982415438e-06,
+            "direction": "increases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "home_ownership_NONE",
+            "name": "Home Ownership: None",
+            "value": 0.0,
+            "shap_value": 0.0,
+            "absolute_shap": 0.0,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "home_ownership_OTHER",
+            "name": "Home Ownership: Other",
+            "value": 0.0,
+            "shap_value": 0.0,
+            "absolute_shap": 0.0,
+            "direction": "decreases_risk",
+            "status": "normal"
+        },
+        {
+            "feature": "purpose_educational",
+            "name": "Purpose: Educational",
+            "value": 0.0,
+            "shap_value": 0.0,
+            "absolute_shap": 0.0,
+            "direction": "decreases_risk",
+            "status": "normal"
+        }
+    ]
+}

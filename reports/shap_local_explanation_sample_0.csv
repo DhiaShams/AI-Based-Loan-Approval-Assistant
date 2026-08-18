@@ -1,0 +1,53 @@
+feature,feature_name,value,shap_value,abs_shap,direction,status
+tot_cur_bal,Current Credit Balance,440810.0,-0.27679372,0.27679372,decreases_risk,normal
+sub_grade_encoded,Credit Sub-Grade,9.0,-0.22906128,0.22906128,decreases_risk,normal
+term,Loan Term,36.0,-0.18039429,0.18039429,decreases_risk,normal
+dti,Debt-to-Income Ratio,32.37,0.14767106,0.14767106,increases_risk,attention
+fico_range_low,FICO Score,665.0,0.14688537,0.14688537,increases_risk,attention
+total_acc,Total Credit Accounts,48.0,-0.13417718,0.13417718,decreases_risk,normal
+purpose_credit_card,Purpose: Credit Card,1.0,-0.108365886,0.108365886,decreases_risk,normal
+open_acc,Open Credit Accounts,18.0,0.09836901,0.09836901,increases_risk,normal
+grade_encoded,Credit Grade,1.0,-0.07870758,0.07870758,decreases_risk,normal
+inq_last_6mths,Recent Credit Inquiries,0.0,-0.06878924,0.06878924,decreases_risk,good
+home_ownership_MORTGAGE,Home Ownership: Mortgage,1.0,-0.06544218,0.06544218,decreases_risk,normal
+initial_list_status_w,Initial Listing Status,0.0,-0.06125069,0.06125069,decreases_risk,normal
+verification_status_Verified,Verification: Verified,1.0,0.048178088,0.048178088,increases_risk,normal
+fico_range_high,FICO Score,669.0,0.047552723,0.047552723,increases_risk,normal
+annual_inc,Annual Income,80000.0,0.045091465,0.045091465,increases_risk,normal
+mort_acc,Mortgage Accounts,2.0,-0.03911779,0.03911779,decreases_risk,normal
+emp_length,Employment Length,4.0,-0.035912022,0.035912022,decreases_risk,normal
+emp_length_missing,Missing Employment Information,0.0,-0.02920333,0.02920333,decreases_risk,normal
+revol_bal,Revolving Credit Balance,11868.0,-0.025108255,0.025108255,decreases_risk,normal
+home_ownership_RENT,Home Ownership: Rent,0.0,-0.023936786,0.023936786,decreases_risk,normal
+int_rate,Interest Rate,10.75,0.020239804,0.020239804,increases_risk,attention
+credit_history_years,Credit History Length,11.665982203969884,-0.020078903,0.020078903,decreases_risk,good
+purpose_debt_consolidation,Purpose: Debt Consolidation,0.0,-0.019561239,0.019561239,decreases_risk,normal
+installment,Monthly Installment,580.65,-0.01876571,0.01876571,decreases_risk,normal
+loan_amnt,Loan Amount,17800.0,0.018527335,0.018527335,increases_risk,attention
+verification_status_Source Verified,Verification: Source Verified,0.0,-0.017130805,0.017130805,decreases_risk,normal
+mths_since_last_record,Months Since Last Public Record,-1.0,-0.011588852,0.011588852,decreases_risk,normal
+application_type_Joint App,Application Type: Joint,0.0,0.0090705585,0.0090705585,increases_risk,normal
+delinq_2yrs,Recent Delinquencies,1.0,0.0074163983,0.0074163983,increases_risk,attention
+revol_util,Credit Utilization,69.0,-0.007388199,0.007388199,decreases_risk,high_risk
+tot_coll_amt,Total Collection Amount,0.0,-0.0068742307,0.0068742307,decreases_risk,normal
+purpose_other,Purpose: Other,0.0,-0.004859119,0.004859119,decreases_risk,normal
+pub_rec,Public Credit Records,0.0,-0.002456273,0.002456273,decreases_risk,good
+purpose_medical,Purpose: Medical,0.0,-0.0014366836,0.0014366836,decreases_risk,normal
+purpose_home_improvement,Purpose: Home Improvement,0.0,0.0013861639,0.0013861639,increases_risk,normal
+purpose_small_business,Purpose: Small Business,0.0,-0.0010182632,0.0010182632,decreases_risk,normal
+home_ownership_OWN,Home Ownership: Own,0.0,-0.001017408,0.001017408,decreases_risk,normal
+mths_since_last_delinq,Months Since Last Delinquency,13.0,-0.0010070164,0.0010070164,decreases_risk,normal
+purpose_house,Purpose: House,0.0,0.00089249946,0.00089249946,increases_risk,normal
+purpose_moving,Purpose: Moving,0.0,-0.00087980716,0.00087980716,decreases_risk,normal
+pub_rec_bankruptcies,Public Record Bankruptcies,0.0,-0.0006941018,0.0006941018,decreases_risk,good
+tax_liens,Tax Liens,0.0,-0.0006700728,0.0006700728,decreases_risk,normal
+purpose_major_purchase,Purpose: Major Purchase,0.0,-0.0006257578,0.0006257578,decreases_risk,normal
+purpose_wedding,Purpose: Wedding,0.0,0.00045322676,0.00045322676,increases_risk,normal
+mths_since_last_delinq_missing,Missing Delinquency Information,0.0,0.00017873803,0.00017873803,increases_risk,normal
+acc_now_delinq,Current Delinquencies,0.0,0.00015743592,0.00015743592,increases_risk,normal
+mths_since_last_record_missing,Missing Public Record Information,1.0,6.583782e-05,6.583782e-05,increases_risk,normal
+purpose_renewable_energy,Purpose: Renewable Energy,0.0,6.3957006e-05,6.3957006e-05,increases_risk,normal
+purpose_vacation,Purpose: Vacation,0.0,8.63272e-06,8.63272e-06,increases_risk,normal
+home_ownership_NONE,Home Ownership: None,0.0,0.0,0.0,decreases_risk,normal
+home_ownership_OTHER,Home Ownership: Other,0.0,0.0,0.0,decreases_risk,normal
+purpose_educational,Purpose: Educational,0.0,0.0,0.0,decreases_risk,normal
