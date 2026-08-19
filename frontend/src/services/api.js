@@ -1,11 +1,20 @@
 const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
-const API_URL = (configuredApiUrl || (import.meta.env.DEV ? 'http://localhost:8000' : '')).replace(/\/$/, '');
+const API_URL = configuredApiUrl
+  ? configuredApiUrl.replace(/\/$/, '')
+  : (import.meta.env.DEV ? 'http://127.0.0.1:8000' : null);
+
+function ensureApiUrl() {
+  if (!API_URL) {
+    throw new Error(
+      'Production API is not configured. Set VITE_API_URL in Vercel Environment Variables and redeploy the frontend.',
+    );
+  }
+
+  return API_URL;
+}
 
 function apiUrl(path) {
-  if (!API_URL) {
-    throw new Error('The production API is not configured. Set VITE_API_URL and rebuild the frontend.');
-  }
-  return `${API_URL}${path}`;
+  return `${ensureApiUrl()}${path}`;
 }
 
 async function readResponse(response) {
