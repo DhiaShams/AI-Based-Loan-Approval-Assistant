@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import csv
+from pathlib import Path
 
 from backend.routes.assessment import router as assessment_router
 
@@ -12,6 +14,30 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(assessment_router)
+
+
+@app.get("/api/fairness")
+def get_fairness_metrics():
+    csv_path = Path(__file__).resolve().parents[1] / "outputs" / "fairness_by_group.csv"
+    with csv_path.open(newline="", encoding="utf-8") as fairness_file:
+        reader = csv.DictReader(fairness_file)
+        return [
+            {
+                "state_group": row["state_group"],
+                **{
+                    metric: float(row[metric])
+                    for metric in (
+                        "accuracy",
+                        "selection_rate",
+                        "false_positive_rate",
+                        "false_negative_rate",
+                        "precision",
+                        "recall",
+                    )
+                },
+            }
+            for row in reader
+        ]
 
 
 @app.get("/api/health")
