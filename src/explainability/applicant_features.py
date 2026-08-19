@@ -91,6 +91,10 @@ FORBIDDEN_MODEL_FEATURES = {
 }
 
 
+# Frontend identity fields are stored with an assessment but are never model features.
+FRONTEND_ONLY_FIELDS = {"full_name", "age"}
+
+
 # ============================================================
 # APPLICANT INPUT FIELDS
 # ============================================================
@@ -645,15 +649,28 @@ def build_model_input(applicant_data, model=None):
     """
 
     # ----------------------------------------
-    # 1. Validate
+    # 1. Remove frontend-only identity fields
+    # ----------------------------------------
+
+    if not isinstance(applicant_data, dict):
+        raise TypeError("applicant_data must be a dictionary.")
+
+    model_applicant_data = {
+        field: value
+        for field, value in applicant_data.items()
+        if field not in FRONTEND_ONLY_FIELDS
+    }
+
+    # ----------------------------------------
+    # 2. Validate
     # ----------------------------------------
 
     validate_applicant_fields(
-        applicant_data
+        model_applicant_data
     )
 
     # ----------------------------------------
-    # 2. Load model
+    # 3. Load model
     # ----------------------------------------
 
     if model is None:
@@ -662,7 +679,7 @@ def build_model_input(applicant_data, model=None):
         )
 
     # ----------------------------------------
-    # 3. Get exact model columns
+    # 4. Get exact model columns
     # ----------------------------------------
 
     model_features = _model_features(
@@ -670,11 +687,11 @@ def build_model_input(applicant_data, model=None):
     )
 
     # ----------------------------------------
-    # 4. Normalize applicant values
+    # 5. Normalize applicant values
     # ----------------------------------------
 
     normalized = _normalize_applicant(
-        applicant_data
+        model_applicant_data
     )
 
     row = {}

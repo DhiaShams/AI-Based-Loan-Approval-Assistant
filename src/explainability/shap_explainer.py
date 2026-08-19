@@ -366,7 +366,7 @@ def create_factor(feature, value, shap_value):
 # MAIN APPLICANT EXPLANATION
 # ============================================================
 
-def explain_applicant(applicant_data):
+def explain_applicant(applicant_data, model_input=None, normalized_applicant=None):
     """
     Generate an applicant-specific XGBoost prediction
     and SHAP explanation.
@@ -419,10 +419,16 @@ def explain_applicant(applicant_data):
     # Build EXACT model input from applicant data
     # --------------------------------------------------------
 
-    model_input, normalized_applicant = build_model_input(
-        applicant_data,
-        model=model,
-    )
+    if model_input is None:
+        model_input, normalized_applicant = build_model_input(
+            applicant_data,
+            model=model,
+        )
+    elif normalized_applicant is None:
+        _, normalized_applicant = build_model_input(
+            applicant_data,
+            model=model,
+        )
 
     # --------------------------------------------------------
     # Validate feature order
