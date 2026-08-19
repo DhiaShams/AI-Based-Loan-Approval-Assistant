@@ -4,7 +4,7 @@ from utils.styles import inject_custom_css
 from utils.components import sidebar_brand, sidebar_user_footer, sidebar_spacer, sidebar_nav_link
 from utils.data import CURRENT_USER
 from utils.icons import ICONS_DIR
-from views import dashboard, new_assessment, applications, risk_analytics, placeholder,decision_explanation
+from views import dashboard, new_assessment, applications, risk_analytics, placeholder,decision_explanation,fairness
 
 st.set_page_config(
     page_title="Loan AI — Decision Intelligence",
@@ -32,7 +32,11 @@ new_assessment_page = st.Page(
     url_path="new-assessment",
 )
 decision_explanation_page = st.Page(decision_explanation.render, title="Decision Explanation",url_path="decision-explanation")
-fairness_page = st.Page(lambda: placeholder.render("Fairness"), title="Fairness", url_path="fairness")
+fairness_page = st.Page(
+    lambda: fairness.render(dashboard_page),
+    title="Fairness",
+    url_path="fairness",
+)
 settings_page = st.Page(lambda: placeholder.render("Settings"), title="Settings", url_path="settings")
 
 # Each main-nav page paired with its icon filename (icons/<name>.png).
