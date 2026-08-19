@@ -15,8 +15,28 @@ npm install
 npm run dev
 ```
 
-The React app reads `VITE_API_URL` when set, defaulting to
-`http://localhost:8000`.
+The React app reads `VITE_API_URL`. During local development it defaults to
+`http://localhost:8000`; production builds require `VITE_API_URL` to be set to
+the public backend origin (for example, `https://loan-api.example.com`). The
+assessment endpoint is `POST /api/assessment` and uses multipart form data.
+
+For a backend host such as Render, use:
+
+```text
+Build command: pip install -r backend/requirements.txt
+Start command: python -m uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+```
+
+Set `CORS_ORIGINS` on the backend to the exact frontend origin(s), separated by
+commas, for example `https://ai-loan-approval-assistant.in,https://your-app.vercel.app`.
+The default configuration also permits Vercel preview origins through
+`CORS_ORIGIN_REGEX`. Set that variable to a narrower regular expression when
+preview access is not needed.
+
+For the deployed frontend, set `VITE_API_URL` in its Vercel project settings,
+then redeploy so Vite embeds the value into the static bundle. Do not include a
+trailing slash. The backend must be deployed separately and its public URL is
+the value to use; this repository does not contain a backend provider URL.
 
 ## 📌 Overview
 

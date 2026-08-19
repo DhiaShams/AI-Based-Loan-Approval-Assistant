@@ -1,4 +1,12 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
+const API_URL = (configuredApiUrl || (import.meta.env.DEV ? 'http://localhost:8000' : '')).replace(/\/$/, '');
+
+function apiUrl(path) {
+  if (!API_URL) {
+    throw new Error('The production API is not configured. Set VITE_API_URL and rebuild the frontend.');
+  }
+  return `${API_URL}${path}`;
+}
 
 async function readResponse(response) {
   const data = await response.json().catch(() => ({}));
@@ -11,13 +19,13 @@ export async function createAssessment(applicant, application, creditFile) {
   form.append('applicant', JSON.stringify(applicant));
   form.append('application', JSON.stringify(application));
   form.append('credit_report', creditFile);
-  return readResponse(await fetch(`${API_URL}/api/assessment`, { method: 'POST', body: form }));
+  return readResponse(await fetch(apiUrl('/api/assessment'), { method: 'POST', body: form }));
 }
 
 export async function fetchApplications() {
-  return readResponse(await fetch(`${API_URL}/api/applications`));
+  return readResponse(await fetch(apiUrl('/api/applications')));
 }
 
 export async function fetchDashboard() {
-  return readResponse(await fetch(`${API_URL}/api/dashboard`));
+  return readResponse(await fetch(apiUrl('/api/dashboard')));
 }
