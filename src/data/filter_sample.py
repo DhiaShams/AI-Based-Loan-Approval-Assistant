@@ -13,11 +13,11 @@ CORE_COLUMNS = [
     "pub_rec", "revol_bal", "revol_util", "total_acc",
     "initial_list_status", "application_type", "acc_now_delinq",
     "tot_coll_amt", "tot_cur_bal", "mort_acc", "pub_rec_bankruptcies",
-    "tax_liens",
+    "tax_liens","addr_state",
 ]
 
 RESOLVED_STATUSES = ["Fully Paid", "Charged Off"]
-SAMPLE_SIZE = 75_000
+SAMPLE_SIZE = 200_000
 RANDOM_STATE = 42
 CHUNK_SIZE = 100_000
 
