@@ -7,4 +7,9 @@ def render():
     st.markdown("## Applications")
     st.caption("AI-powered loan decision intelligence")
     st.write("")
-    applications_table(RECENT_APPLICATIONS)
+    show_search = st.query_params.get("search") == "1"
+    applications_table(
+        RECENT_APPLICATIONS,
+        show_search=show_search,
+        show_view_all=not show_search,
+    )

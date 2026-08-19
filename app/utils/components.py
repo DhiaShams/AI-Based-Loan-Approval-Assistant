@@ -1,4 +1,5 @@
 import streamlit as st
+import urllib.parse
 from utils.format import format_currency, risk_level_label, decision_label
 from utils.icons import icon_img
 
@@ -29,11 +30,11 @@ def decision_html(decision):
     return f'<span class="decision decision-{decision}">{decision_label(decision).upper()}</span>'
 
 
-def applications_table(applications):
+def applications_table(applications, show_search=False, show_view_all=False):
     rows = "".join(f"""
         <tr>
             <td class="applicant">
-                <a href="risk-analytics?applicant={app['applicant']}" target="_self" class="applicant-link">{app['applicant']}</a>
+                <a href="new-assessment?applicant={urllib.parse.quote(app['applicant'])}" target="_self" class="applicant-link">{app['applicant']}</a>
             </td>
             <td>{format_currency(app['amount'])}</td>
             <td>{app['risk_score']}%</td>
@@ -42,14 +43,61 @@ def applications_table(applications):
         </tr>
     """ for app in applications)
 
+    # Build the header right-side elements based on settings
+    header_right = ""
+    if show_search:
+        header_right = """
+            <div class="loanai-search-container">
+                <svg class="loanai-search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="loanai-search-input" class="loanai-search-input" onkeyup="filterApplications()" placeholder="Search" autocomplete="off">
+            </div>
+        """
+    elif show_view_all:
+        header_right = '<a class="loanai-view-all" href="applications?search=1" target="_self">View All &rsaquo;</a>'
+
+    # Client-side filtering script to avoid slow Streamlit reruns
+    search_script = ""
+    if show_search:
+        search_script = """
+            <script>
+            if (typeof window.filterApplications === 'undefined') {
+                window.filterApplications = function() {
+                    var input = document.getElementById("loanai-search-input");
+                    if (!input) return;
+                    var filter = input.value.toLowerCase();
+                    var table = document.getElementById("loanai-applications-table");
+                    if (!table) return;
+                    var tr = table.getElementsByTagName("tr");
+
+                    for (var i = 1; i < tr.length; i++) {
+                        var row = tr[i];
+                        var textContent = row.textContent || row.innerText;
+                        if (textContent.toLowerCase().indexOf(filter) > -1) {
+                            row.style.display = "";
+                        } else {
+                            row.style.display = "none";
+                        }
+                    }
+                };
+            }
+            // Trigger initial filtering if input was pre-populated (e.g. browser cache)
+            setTimeout(function() {
+                if (window.filterApplications) window.filterApplications();
+            }, 100);
+            </script>
+        """
+
     render_html(f"""
         <div class="loanai-card">
             <div class="loanai-table-header">
                 <p class="loanai-table-title">Recent Applications</p>
-                <a class="loanai-view-all" href="#">View All &rsaquo;</a>
+                {header_right}
             </div>
             <div class="loanai-table-scroll">
-                <table class="loanai-table">
+                <table class="loanai-table" id="loanai-applications-table">
                     <thead>
                         <tr>
                             <th>Applicant</th>
@@ -65,6 +113,7 @@ def applications_table(applications):
                 </table>
             </div>
         </div>
+        {search_script}
     """)
 
 

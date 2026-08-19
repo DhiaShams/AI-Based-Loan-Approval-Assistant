@@ -66,12 +66,11 @@ CUSTOM_CSS = """
 }
 .loanai-table th {
     text-align: left;
-    font-size: 0.72rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: #94a3b8;
-    padding: 0 16px 10px 16px;
+    letter-spacing: 0.01em;
+    color: #64748b;
+    padding: 0 16px 12px 16px;
     border-bottom: 1px solid #f1f5f9;
 }
 .loanai-table th:first-child,
@@ -101,6 +100,8 @@ CUSTOM_CSS = """
     border-radius: 999px;
     font-size: 0.72rem;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
 }
 .badge-low { background: #dcfce7; color: #16a34a; }
 .badge-medium { background: #fef3c7; color: #d97706; }
@@ -313,13 +314,43 @@ CUSTOM_CSS = """
 .applicant-link,
 .applicant-link:link,
 .applicant-link:visited {
-    color: #0f172a !important;
+    color: #2563eb !important;
     text-decoration: none !important;
     font-weight: 600;
 }
 .applicant-link:hover {
-    color: #2563eb !important;
+    color: #1d4ed8 !important;
     text-decoration: underline !important;
+}
+
+/* Real-time search styling */
+.loanai-search-container {
+    position: relative;
+    width: 280px;
+}
+.loanai-search-input {
+    width: 100%;
+    background-color: #f1f5f9;
+    border: 1px solid transparent;
+    border-radius: 9999px;
+    padding: 8px 16px 8px 40px;
+    font-size: 0.88rem;
+    color: #475569;
+    outline: none;
+    transition: all 0.2s ease;
+}
+.loanai-search-input:focus {
+    background-color: #ffffff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    color: #0f172a;
+}
+.loanai-search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
 }
 </style>
 """
