@@ -50,7 +50,7 @@ def field_row(label, value, suffix=""):
     """)
 
 
-def render():
+def render(risk_page):
     selected_name = st.session_state.get("selected_applicant_name", "Arjun Menon")
     fields = APPLICANT_PROFILES.get(selected_name, APPLICATION_UNDER_REVIEW)
 
@@ -181,6 +181,7 @@ def render():
             "level": level,
             "decision": decision,
         }
+        st.switch_page(risk_page)
 
     # ---------------------------------------------------------
     # Assessment Result

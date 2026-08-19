@@ -24,9 +24,13 @@ if "applicant" in qp:
         st.session_state["last_seen_applicant_qp"] = val
 
 dashboard_page = st.Page(dashboard.render, title="Dashboard", url_path="dashboard", default=True)
-new_assessment_page = st.Page(new_assessment.render, title="New Assessment", url_path="new-assessment")
 applications_page = st.Page(applications.render, title="Applications", url_path="applications")
 risk_analytics_page = st.Page(risk_analytics.render, title="Risk Analytics", url_path="risk-analytics")
+new_assessment_page = st.Page(
+    lambda: new_assessment.render(risk_analytics_page),
+    title="New Assessment",
+    url_path="new-assessment",
+)
 decision_explanation_page = st.Page(decision_explanation.render, title="Decision Explanation",url_path="decision-explanation")
 fairness_page = st.Page(lambda: placeholder.render("Fairness"), title="Fairness", url_path="fairness")
 settings_page = st.Page(lambda: placeholder.render("Settings"), title="Settings", url_path="settings")

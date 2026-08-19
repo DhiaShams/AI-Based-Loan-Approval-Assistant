@@ -17,4 +17,4 @@ def render():
         stat_card("HIGH RISK", str(SUMMARY_STATS["high_risk"]))
 
     st.write("")
-    applications_table(RECENT_APPLICATIONS)
+    applications_table(RECENT_APPLICATIONS, show_search=False, show_view_all=True)
