@@ -32,7 +32,9 @@ def decision_html(decision):
 def applications_table(applications):
     rows = "".join(f"""
         <tr>
-            <td class="applicant">{app['applicant']}</td>
+            <td class="applicant">
+                <a href="risk-analytics?applicant={app['applicant']}" target="_self" class="applicant-link">{app['applicant']}</a>
+            </td>
             <td>{format_currency(app['amount'])}</td>
             <td>{app['risk_score']}%</td>
             <td>{risk_badge_html(app['risk_level'])}</td>
@@ -79,16 +81,17 @@ def sidebar_brand():
 
 
 def sidebar_nav_link(page, icon_name, active=False):
-    """Custom nav link (replaces st.page_link) so we can show a custom
-    PNG icon next to each item - st.Page's built-in `icon` only supports
-    emoji/Material Symbols, not arbitrary images."""
-    href = page.url_path or "/"
-    render_html(f"""
-        <a href="{href}" target="_self" class="sidebar-nav-link{' active' if active else ''}">
-            {icon_img(icon_name, size=18, alt=page.title)}
-            <span>{page.title}</span>
-        </a>
-    """)
+    """Use Streamlit's native router to avoid a full document reload."""
+    material_icons = {
+        "dashboard": ":material/dashboard:",
+        "new_assessment": ":material/note_add:",
+        "applications": ":material/description:",
+        "risk_analysis": ":material/analytics:",
+        "decision_explanation": ":material/chat:",
+        "fairness": ":material/balance:",
+        "settings": ":material/settings:",
+    }
+    st.page_link(page, label=page.title, icon=material_icons.get(icon_name))
 
 
 def sidebar_user_footer(user):

@@ -1,6 +1,7 @@
 import streamlit as st
 from utils.format import credit_score_rating, debt_to_income_ratio
 from utils.components import risk_badge_html, decision_html, render_html, card_heading
+from utils.data import APPLICANT_PROFILES
 
 
 # The application currently under review.
@@ -50,7 +51,8 @@ def field_row(label, value, suffix=""):
 
 
 def render():
-    fields = APPLICATION_UNDER_REVIEW
+    selected_name = st.session_state.get("selected_applicant_name", "Arjun Menon")
+    fields = APPLICANT_PROFILES.get(selected_name, APPLICATION_UNDER_REVIEW)
 
     # ---------------------------------------------------------
     # Header

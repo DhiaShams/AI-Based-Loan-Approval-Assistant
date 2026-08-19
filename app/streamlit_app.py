@@ -4,7 +4,7 @@ from utils.styles import inject_custom_css
 from utils.components import sidebar_brand, sidebar_user_footer, sidebar_spacer, sidebar_nav_link
 from utils.data import CURRENT_USER
 from utils.icons import ICONS_DIR
-from views import dashboard, new_assessment, placeholder
+from views import dashboard, new_assessment, applications, risk_analytics, placeholder
 
 st.set_page_config(
     page_title="Loan AI — Decision Intelligence",
@@ -15,10 +15,18 @@ st.set_page_config(
 
 inject_custom_css()
 
+# Read applicant query parameter globally to set session state with change-detection
+qp = st.query_params
+if "applicant" in qp:
+    val = qp["applicant"]
+    if st.session_state.get("last_seen_applicant_qp") != val:
+        st.session_state["selected_applicant_name"] = val
+        st.session_state["last_seen_applicant_qp"] = val
+
 dashboard_page = st.Page(dashboard.render, title="Dashboard", url_path="dashboard", default=True)
 new_assessment_page = st.Page(new_assessment.render, title="New Assessment", url_path="new-assessment")
-applications_page = st.Page(lambda: placeholder.render("Applications"), title="Applications", url_path="applications")
-risk_analytics_page = st.Page(lambda: placeholder.render("Risk Analytics"), title="Risk Analytics", url_path="risk-analytics")
+applications_page = st.Page(applications.render, title="Applications", url_path="applications")
+risk_analytics_page = st.Page(risk_analytics.render, title="Risk Analytics", url_path="risk-analytics")
 decision_explanation_page = st.Page(lambda: placeholder.render("Decision Explanation"), title="Decision Explanation", url_path="decision-explanation")
 fairness_page = st.Page(lambda: placeholder.render("Fairness"), title="Fairness", url_path="fairness")
 settings_page = st.Page(lambda: placeholder.render("Settings"), title="Settings", url_path="settings")

@@ -7,7 +7,7 @@ def risk_level_label(level):
 
 
 def decision_label(decision):
-    return {"approve": "Approve", "review": "Review", "reject": "Reject"}[decision]
+    return {"approve": "Approve", "review": "Review", "reject": "Reject", "pending": "Pending"}[decision]
 
 
 def credit_score_rating(score):

@@ -119,6 +119,7 @@ CUSTOM_CSS = """
 .decision-approve { color: #16a34a; }
 .decision-review { color: #d97706; }
 .decision-reject { color: #dc2626; }
+.decision-pending { color: #d97706; }
 
 /* Sidebar branding block */
 .sidebar-brand {
@@ -261,6 +262,64 @@ CUSTOM_CSS = """
     font-size: 0.95rem;
     color: #0f172a;
     margin-bottom: 14px;
+}
+
+/* Custom buttons for navigation */
+.btn-outline,
+.btn-outline:link,
+.btn-outline:visited {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: 1px solid #2563eb;
+    border-radius: 8px;
+    color: #2563eb !important;
+    background: transparent;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+.btn-outline:hover {
+    background: #eff6ff;
+    color: #1d4ed8 !important;
+    border-color: #1d4ed8;
+}
+
+.btn-filled,
+.btn-filled:link,
+.btn-filled:visited {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: #2563eb;
+    border: 1px solid #2563eb;
+    border-radius: 8px;
+    color: #ffffff !important;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+.btn-filled:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+.applicant-link,
+.applicant-link:link,
+.applicant-link:visited {
+    color: #0f172a !important;
+    text-decoration: none !important;
+    font-weight: 600;
+}
+.applicant-link:hover {
+    color: #2563eb !important;
+    text-decoration: underline !important;
 }
 </style>
 """
