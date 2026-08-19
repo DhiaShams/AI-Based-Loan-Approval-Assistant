@@ -1,5 +1,23 @@
 # AI-Based Loan Approval Assistant
 
+## React + FastAPI frontend
+
+The full-stack application uses the existing Python/XGBoost/SHAP pipeline
+through FastAPI:
+
+```powershell
+# Terminal 1: backend
+python -m uvicorn backend.main:app --reload
+
+# Terminal 2: frontend
+cd frontend
+npm install
+npm run dev
+```
+
+The React app reads `VITE_API_URL` when set, defaulting to
+`http://localhost:8000`.
+
 ## 📌 Overview
 
 The **AI-Based Loan Approval Assistant** is a Python-based machine learning project that helps make loan assessment more **consistent, explainable, and data-driven**.
@@ -20,7 +38,7 @@ The project additionally performs a **fairness analysis** to identify potential 
 * Evaluate models using precision, recall, F1-score, and ROC-AUC.
 * Explain individual loan predictions using SHAP/LIME.
 * Analyze potential fairness issues across demographic groups.
-* Provide an easy-to-use web interface using Streamlit.
+* Provide an easy-to-use React web interface backed by FastAPI.
 
 ---
 
@@ -49,7 +67,7 @@ SHAP/LIME Explanation
         ↓
 Fairness Analysis
         ↓
-Streamlit Dashboard
+React Dashboard
 ```
 
 ---
@@ -190,7 +208,7 @@ The purpose is to identify potential disparities and understand whether the mode
 
 ---
 
-## 🖥️ Streamlit Dashboard
+## 🖥️ React Dashboard
 
 The final application will provide a simple interface where a user can enter applicant information.
 
@@ -244,7 +262,8 @@ Risk Factors:
 | Gradient Boosting    | XGBoost             |
 | Imbalance Handling   | imbalanced-learn    |
 | Explainable AI       | SHAP / LIME         |
-| Dashboard            | Streamlit           |
+| Frontend             | React / Vite        |
+| Backend API          | FastAPI / Uvicorn   |
 | Model Storage        | Joblib              |
 
 ---
@@ -314,13 +333,19 @@ pip install -r requirements.txt
 python src/train_model.py
 ```
 
-### Run the Streamlit application
+### Run the application
 
 ```bash
-streamlit run app.py
+# Terminal 1
+python -m uvicorn backend.main:app --reload
+
+# Terminal 2
+cd frontend
+npm install
+npm run dev
 ```
 
-The application will open in your browser.
+The frontend uses `VITE_API_URL` when set and defaults to `http://localhost:8000`.
 
 ---
 
