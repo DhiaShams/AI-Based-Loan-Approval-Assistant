@@ -1,150 +1,129 @@
 import streamlit as st
-import urllib.parse
-from utils.data import RECENT_APPLICATIONS
-from utils.components import render_html
 
 
-def _render_segmented_bar(value_score, is_increase_risk, total_blocks=10):
-    """Renders a 10-block segmented bar chart matching the reference UI."""
-    active_blocks = min(total_blocks, max(1, int(round((abs(value_score) / 0.15) * total_blocks))))
-    
-    if is_increase_risk:
-        active_style = "background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);"
-    else:
-        active_style = "background: linear-gradient(180deg, #10b981 0%, #059669 100%);"
-        
-    inactive_style = "background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%);"
+DISPLAY_NAMES = {
+    "loan_amnt": "Loan Amount", "term": "Loan Term", "int_rate": "Interest Rate",
+    "installment": "Monthly Installment", "emp_length": "Employment Length",
+    "home_ownership": "Home Ownership", "annual_inc": "Annual Income",
+    "verification_status": "Verification Status", "issue_d": "Loan Issue Date",
+    "purpose": "Loan Purpose", "dti": "Debt-to-Income Ratio",
+    "delinq_2yrs": "Delinquencies (Last 2 Years)", "earliest_cr_line": "Earliest Credit Line",
+    "fico_range_low": "FICO Score (Low)", "fico_range_high": "FICO Score (High)",
+    "inq_last_6mths": "Credit Inquiries (Last 6 Months)",
+    "mths_since_last_delinq": "Months Since Last Delinquency",
+    "mths_since_last_record": "Months Since Last Public Record", "open_acc": "Open Credit Accounts",
+    "pub_rec": "Public Records", "revol_bal": "Revolving Balance",
+    "revol_util": "Revolving Credit Utilization", "total_acc": "Total Credit Accounts",
+    "acc_now_delinq": "Current Delinquencies", "tot_coll_amt": "Total Collection Amount",
+    "tot_cur_bal": "Total Current Balance", "mort_acc": "Mortgage Accounts",
+    "pub_rec_bankruptcies": "Public Record Bankruptcies", "tax_liens": "Tax Liens",
+    "initial_list_status": "Initial Listing Status", "application_type": "Application Type",
+    "credit_history_years": "Credit History Length",
+    "emp_length_missing": "Employment Length",
+    "mths_since_last_delinq_missing": "Months Since Last Delinquency",
+    "mths_since_last_record_missing": "Months Since Last Public Record",
+}
 
-    blocks_html = []
-    for i in range(total_blocks):
-        style = active_style if i < active_blocks else inactive_style
-        blocks_html.append(
-            f'<div style="flex: 1; height: 18px; {style} border-radius: 2px;"></div>'
+ONE_HOT_PREFIXES = {
+    "home_ownership_": "home_ownership", "verification_status_": "verification_status",
+    "purpose_": "purpose", "initial_list_status_": "initial_list_status",
+    "application_type_": "application_type",
+}
+
+
+def _feature_details(factor, applicant):
+    feature = factor.get("feature", "")
+    raw_feature = feature
+    selected_value = applicant.get(feature)
+    for prefix, base_feature in ONE_HOT_PREFIXES.items():
+        if feature.startswith(prefix):
+            raw_feature = base_feature
+            selected_value = applicant.get(base_feature, feature[len(prefix):])
+            break
+    return DISPLAY_NAMES.get(raw_feature, factor.get("display_name", "This factor")), selected_value
+
+
+def _format_value(feature, value):
+    if value is None:
+        return "Not provided"
+    if feature in {"Loan Amount", "Annual Income", "Monthly Installment", "Revolving Balance", "Total Collection Amount", "Total Current Balance"}:
+        return f"${float(value):,.0f}"
+    if feature in {"Interest Rate", "Debt-to-Income Ratio", "Revolving Credit Utilization"}:
+        return f"{float(value):,.1f}%"
+    if feature == "Loan Term":
+        return f"{float(value):,.0f} months"
+    if feature in {"Employment Length", "Open Credit Accounts", "Total Credit Accounts", "Mortgage Accounts", "Public Records", "Public Record Bankruptcies", "Tax Liens", "Current Delinquencies", "Delinquencies (Last 2 Years)", "Credit Inquiries (Last 6 Months)"}:
+        return f"{float(value):,.0f}"
+    return str(value)
+
+
+def _render_factors(title, factors, applicant, color):
+    st.markdown(f"### {title}")
+    if not factors:
+        st.caption("No applicant factors in this category.")
+        return
+    for index, factor in enumerate(factors[:5], 1):
+        label, value = _feature_details(factor, applicant)
+        feature_value = _format_value(label, value)
+        direction = "higher" if float(factor.get("shap_value", 0)) > 0 else "lower"
+        explanation = f"Your {label} of {feature_value} is contributing to {direction} estimated default risk."
+        st.markdown(
+            f"**{index}. {label}**  \n"
+            f"Applicant value: **{feature_value}**  \n"
+            f":{color}[{explanation}]"
         )
+        st.divider()
 
-    return f'<div style="display: flex; gap: 3px; width: 100%; max-width: 280px;">{"".join(blocks_html)}</div>'
+
+def _summary(increasing, reducing, applicant):
+    increasing_names = [_feature_details(factor, applicant)[0] for factor in increasing[:3]]
+    reducing_names = [_feature_details(factor, applicant)[0] for factor in reducing[:3]]
+    sentences = []
+    if increasing_names:
+        joined = ", ".join(increasing_names[:-1]) + (f" and {increasing_names[-1]}" if len(increasing_names) > 1 else increasing_names[-1])
+        sentences.append(f"Your assessment was influenced by {joined}, which contributed to higher estimated default risk.")
+    if reducing_names:
+        joined = ", ".join(reducing_names[:-1]) + (f" and {reducing_names[-1]}" if len(reducing_names) > 1 else reducing_names[-1])
+        sentences.append(f"{joined} helped reduce the estimated risk.")
+    return " ".join(sentences)
 
 
 def render():
-    st.markdown("<h2 style='font-size: 1.6rem; font-weight: 700; margin: 0 0 4px 0; color: #0f172a;'>Decision Explanation</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='font-size: 0.85rem; color: #64748b; margin: 0 0 24px 0;'>Why did the AI make this decision?</p>", unsafe_allow_html=True)
+    st.markdown("## Decision Explanation")
+    st.markdown("### Why was this prediction made?")
+    result = st.session_state.get("assessment_result")
+    if not result:
+        st.info("No assessment is available. Please run a new assessment first.")
+        return
 
-    if "selected_applicant_name" not in st.session_state:
-        st.session_state["selected_applicant_name"] = RECENT_APPLICATIONS[0]["applicant"]
+    prediction = result.get("model_prediction") or {}
+    decision = result.get("decision") or {}
+    explanation = result.get("explanation") or {}
+    applicant = result.get("applicant") or {}
+    if not prediction or not decision:
+        st.warning("The assessment result is incomplete. Please run a new assessment.")
+        return
 
-    selected_name = st.session_state["selected_applicant_name"]
-    encoded_name = urllib.parse.quote(selected_name)
+    st.markdown(f"Your application was classified as **{str(prediction.get('label', 'Unknown')).upper()}**.")
+    columns = st.columns(4)
+    values = [
+        ("Estimated Default Risk", f"{float(prediction.get('default_probability_percent', 0)):.2f}%"),
+        ("Estimated Non-default Probability", f"{float(prediction.get('non_default_probability_percent', 0)):.2f}%"),
+        ("Risk Level", str(decision.get("risk_level", "Unknown")).upper()),
+        ("Recommendation", str(decision.get("recommendation", "Unknown")).upper()),
+    ]
+    for column, (label, value) in zip(columns, values):
+        with column:
+            st.metric(label, value)
 
-    # SHAP Drivers Card
-    shap_card_html = f"""
-    <div style="background: #ffffff; border-radius: 16px; padding: 28px 36px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; margin-bottom: 28px;">
-        <h3 style="font-size: 1.2rem; font-weight: 700; color: #0f172a; margin: 0 0 20px 0;">SHAP Drivers</h3>
-        
-        <!-- Factors Increasing Risk -->
-        <p style="font-size: 0.82rem; font-weight: 700; color: #ef4444; margin: 0 0 16px 0;">Factors increasing risk</p>
-        
-        <div style="display: flex; flex-direction: column;">
-            <!-- Debt-to-Income ratio -->
-            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 14px;">
-                <div style="width: 200px;">
-                    <div style="font-size: 0.88rem; font-weight: 700; color: #1e293b;">Debt-to-Income ratio</div>
-                    <div style="font-size: 0.75rem; color: #64748b;">15%</div>
-                </div>
-                {_render_segmented_bar(0.07, is_increase_risk=True)}
-                <div style="width: 60px; text-anchor: end; text-align: right; font-size: 0.88rem; font-weight: 700; color: #ef4444;">+0.07</div>
-            </div>
-            
-            <div style="border-bottom: 1px solid #e2e8f0; margin-bottom: 14px;"></div>
+    increasing = explanation.get("top_risk_factors") or explanation.get("risk_factors") or []
+    reducing = explanation.get("top_protective_factors") or explanation.get("protective_factors") or []
+    if not increasing and not reducing:
+        st.info("Prediction is available, but the detailed explanation could not be generated.")
+        return
 
-            <!-- Loan Amount -->
-            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 14px;">
-                <div style="width: 200px;">
-                    <div style="font-size: 0.88rem; font-weight: 700; color: #1e293b;">Loan Amount</div>
-                    <div style="font-size: 0.75rem; color: #64748b;">₹5,00,000</div>
-                </div>
-                {_render_segmented_bar(0.04, is_increase_risk=True)}
-                <div style="width: 60px; text-anchor: end; text-align: right; font-size: 0.88rem; font-weight: 700; color: #ef4444;">+0.04</div>
-            </div>
-
-            <div style="border-bottom: 1px solid #e2e8f0; margin-bottom: 20px;"></div>
-
-            <!-- Factors Decreasing Risk -->
-            <p style="font-size: 0.82rem; font-weight: 700; color: #10b981; margin: 0 0 16px 0;">Factors decreasing risk</p>
-
-            <!-- Credit Score -->
-            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 14px;">
-                <div style="width: 200px;">
-                    <div style="font-size: 0.88rem; font-weight: 700; color: #1e293b;">Credit Score</div>
-                    <div style="font-size: 0.75rem; color: #64748b;">720 (Excellent)</div>
-                </div>
-                {_render_segmented_bar(0.12, is_increase_risk=False)}
-                <div style="width: 60px; text-anchor: end; text-align: right; font-size: 0.88rem; font-weight: 700; color: #10b981;">-0.12</div>
-            </div>
-
-            <div style="border-bottom: 1px solid #e2e8f0; margin-bottom: 14px;"></div>
-
-            <!-- Income -->
-            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 14px;">
-                <div style="width: 200px;">
-                    <div style="font-size: 0.88rem; font-weight: 700; color: #1e293b;">Income</div>
-                    <div style="font-size: 0.75rem; color: #64748b;">₹60,000/year</div>
-                </div>
-                {_render_segmented_bar(0.08, is_increase_risk=False)}
-                <div style="width: 60px; text-anchor: end; text-align: right; font-size: 0.88rem; font-weight: 700; color: #10b981;">-0.08</div>
-            </div>
-
-            <div style="border-bottom: 1px solid #e2e8f0; margin-bottom: 14px;"></div>
-
-            <!-- Employment Length -->
-            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
-                <div style="width: 200px;">
-                    <div style="font-size: 0.88rem; font-weight: 700; color: #1e293b;">Employment Length</div>
-                    <div style="font-size: 0.75rem; color: #64748b;">5 Years</div>
-                </div>
-                {_render_segmented_bar(0.05, is_increase_risk=False)}
-                <div style="width: 60px; text-anchor: end; text-align: right; font-size: 0.88rem; font-weight: 700; color: #10b981;">-0.05</div>
-            </div>
-
-            <!-- Axis Scale Line -->
-            <div style="display: flex; justify-content: center; margin-top: 18px;">
-                <div style="width: 100%; max-width: 380px; display: flex; flex-direction: column; align-items: center;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; font-size: 0.72rem; color: #64748b;">
-                        <span>&larr; -0.15</span>
-                        <span>0 (No Impact)</span>
-                        <span>+0.15 &rarr;</span>
-                    </div>
-                    <div style="height: 1px; background: #cbd5e1; width: 100%; margin-top: 2px;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    """
-    render_html(shap_card_html)
-
-    # AI Explanation Section
-    ai_card_html = """
-    <div style="margin-bottom: 28px;">
-        <h3 style="font-size: 1.2rem; font-weight: 700; color: #0f172a; margin: 0 0 12px 0;">AI Explanation</h3>
-        <div style="background: #ffffff; border-radius: 12px; padding: 22px 28px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #f1f5f9;">
-            <p style="font-size: 0.9rem; color: #334155; line-height: 1.6; margin: 0;">
-                The applicant's strong credit score and stable employment significantly reduce the predicted risk. However, the requested loan amount and existing debt-to-income ratio increase the risk slightly.
-            </p>
-        </div>
-    </div>
-    """
-    render_html(ai_card_html)
-
-    # Bottom Actions
-    buttons_html = f"""
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
-        <a href="risk-analytics?applicant={encoded_name}" target="_self" style="text-decoration: none; display: inline-flex; align-items: center; border: 1.5px solid #3b82f6; color: #2563eb; background: #ffffff; border-radius: 8px; font-size: 0.85rem; font-weight: 600; padding: 10px 18px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            Back to Risk Analysis
-        </a>
-        <a href="new-assessment?applicant={encoded_name}" target="_self" style="text-decoration: none; display: inline-flex; align-items: center; background: #1d4ed8; color: #ffffff; border-radius: 8px; font-size: 0.85rem; font-weight: 600; padding: 10px 20px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            View Applicant Profile
-        </a>
-    </div>
-    """
-    render_html(buttons_html)
+    st.caption("These are the factors that had the strongest influence on this individual prediction.")
+    _render_factors("Factors Increasing Default Risk", increasing, applicant, "red")
+    _render_factors("Factors Reducing Default Risk", reducing, applicant, "green")
+    st.markdown("### What influenced your result?")
+    st.write(_summary(increasing, reducing, applicant))

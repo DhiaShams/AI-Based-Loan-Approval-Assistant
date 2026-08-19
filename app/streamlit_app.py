@@ -25,13 +25,17 @@ if "applicant" in qp:
 
 dashboard_page = st.Page(dashboard.render, title="Dashboard", url_path="dashboard", default=True)
 applications_page = st.Page(applications.render, title="Applications", url_path="applications")
-risk_analytics_page = st.Page(risk_analytics.render, title="Risk Analytics", url_path="risk-analytics")
+decision_explanation_page = st.Page(decision_explanation.render, title="Decision Explanation", url_path="decision-explanation")
+risk_analytics_page = st.Page(
+    lambda: risk_analytics.render(decision_explanation_page),
+    title="Risk Analytics",
+    url_path="risk-analytics",
+)
 new_assessment_page = st.Page(
     lambda: new_assessment.render(risk_analytics_page),
     title="New Assessment",
     url_path="new-assessment",
 )
-decision_explanation_page = st.Page(decision_explanation.render, title="Decision Explanation",url_path="decision-explanation")
 fairness_page = st.Page(
     lambda: fairness.render(dashboard_page),
     title="Fairness",

@@ -1,0 +1,1 @@
+"""Inference contracts and decision policy for applicant predictions."""
