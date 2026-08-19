@@ -151,6 +151,11 @@ def main():
     df = encode_target(df)
     df = engineer_features(df)
     df = handle_missing(df)
+    if "addr_state" in df.columns:
+        df[["default_flag", "addr_state"]].to_csv(
+            "data/processed/fairness_reference_v1.csv", index=False
+        )
+        df = df.drop(columns=["addr_state"])
     df = encode_categoricals(df)
 
     print(f"Rows out: {len(df):,}, columns out: {df.shape[1]}")
