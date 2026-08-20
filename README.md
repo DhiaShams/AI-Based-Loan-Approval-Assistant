@@ -1,5 +1,43 @@
 # AI-Based Loan Approval Assistant
 
+## React + FastAPI frontend
+
+The full-stack application uses the existing Python/XGBoost/SHAP pipeline
+through FastAPI:
+
+```powershell
+# Terminal 1: backend
+python -m uvicorn backend.main:app --reload
+
+# Terminal 2: frontend
+cd frontend
+npm install
+npm run dev
+```
+
+The React app reads `VITE_API_URL`. During local development it defaults to
+`http://localhost:8000`; production builds require `VITE_API_URL` to be set to
+the public backend origin (for example, `https://loan-api.example.com`). The
+assessment endpoint is `POST /api/assessment` and uses multipart form data.
+
+For a backend host such as Render, use:
+
+```text
+Build command: pip install -r backend/requirements.txt
+Start command: python -m uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+```
+
+Set `CORS_ORIGINS` on the backend to the exact frontend origin(s), separated by
+commas, for example `https://ai-loan-approval-assistant.in,https://your-app.vercel.app`.
+The default configuration also permits Vercel preview origins through
+`CORS_ORIGIN_REGEX`. Set that variable to a narrower regular expression when
+preview access is not needed.
+
+For the deployed frontend, set `VITE_API_URL` in its Vercel project settings,
+then redeploy so Vite embeds the value into the static bundle. Do not include a
+trailing slash. The backend must be deployed separately and its public URL is
+the value to use; this repository does not contain a backend provider URL.
+
 ## 📌 Overview
 
 The **AI-Based Loan Approval Assistant** is a Python-based machine learning project that helps make loan assessment more **consistent, explainable, and data-driven**.
@@ -20,7 +58,7 @@ The project additionally performs a **fairness analysis** to identify potential 
 * Evaluate models using precision, recall, F1-score, and ROC-AUC.
 * Explain individual loan predictions using SHAP/LIME.
 * Analyze potential fairness issues across demographic groups.
-* Provide an easy-to-use web interface using Streamlit.
+* Provide an easy-to-use React web interface backed by FastAPI.
 
 ---
 
@@ -49,7 +87,7 @@ SHAP/LIME Explanation
         ↓
 Fairness Analysis
         ↓
-Streamlit Dashboard
+React Dashboard
 ```
 
 ---
@@ -190,7 +228,7 @@ The purpose is to identify potential disparities and understand whether the mode
 
 ---
 
-## 🖥️ Streamlit Dashboard
+## 🖥️ React Dashboard
 
 The final application will provide a simple interface where a user can enter applicant information.
 
@@ -244,7 +282,8 @@ Risk Factors:
 | Gradient Boosting    | LightGBM             |
 | Imbalance Handling   | imbalanced-learn    |
 | Explainable AI       | SHAP / LIME         |
-| Dashboard            | Streamlit           |
+| Frontend             | React / Vite        |
+| Backend API          | FastAPI / Uvicorn   |
 | Model Storage        | Joblib              |
 
 ---
@@ -314,13 +353,19 @@ pip install -r requirements.txt
 python src/train_model.py
 ```
 
-### Run the Streamlit application
+### Run the application
 
 ```bash
-streamlit run app.py
+# Terminal 1
+python -m uvicorn backend.main:app --reload
+
+# Terminal 2
+cd frontend
+npm install
+npm run dev
 ```
 
-The application will open in your browser.
+The frontend uses `VITE_API_URL` when set and defaults to `http://localhost:8000`.
 
 ---
 
