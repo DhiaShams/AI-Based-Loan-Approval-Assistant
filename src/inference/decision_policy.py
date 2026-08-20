@@ -1,6 +1,6 @@
 """Operational probability-to-recommendation policy.
 
-This policy is separate from the XGBoost classifier and from SHAP. The
+This policy is separate from the LightGBM classifier and from SHAP. The
 thresholds are MVP decision-policy settings, not model training thresholds.
 """
 

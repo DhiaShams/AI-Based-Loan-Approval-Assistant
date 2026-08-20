@@ -1,10 +1,10 @@
 """
-Applicant input validation and XGBoost model-vector construction.
+Applicant input validation and LightGBM model-vector construction.
 
 Purpose
 -------
 This module converts the values entered by an applicant into the exact
-feature vector expected by the trained XGBoost model.
+feature vector expected by the trained LightGBM model.
 
 Flow
 ----
@@ -18,9 +18,9 @@ _normalize_applicant()
     ↓
 build_model_input()
     ↓
-Complete XGBoost feature vector
+Complete LightGBM feature vector
     ↓
-XGBoost prediction + SHAP explanation
+LightGBM prediction + SHAP explanation
 
 Important
 ---------
@@ -32,7 +32,7 @@ This module does NOT:
 - generate reports
 
 The vector returned by build_model_input() must be passed unchanged
-to both XGBoost and SHAP.
+to both LightGBM and SHAP.
 """
 
 from pathlib import Path
@@ -48,7 +48,7 @@ import pandas as pd
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 
-MODEL_PATH = ROOT_DIR / "models" / "xgboost.pkl"
+MODEL_PATH = ROOT_DIR / "models" / "lightgbm.pkl"
 
 
 # ============================================================
@@ -578,14 +578,14 @@ def _normalize_applicant(applicant_data):
 
 def _model_features(model):
     """
-    Read the exact feature order expected by XGBoost.
+    Read the exact feature order expected by LightGBM.
 
     The model must have been trained without grade/sub_grade.
     """
 
     if not hasattr(model, "feature_names_in_"):
         raise ValueError(
-            "Loaded XGBoost model does not expose "
+            "Loaded LightGBM model does not expose "
             "feature_names_in_."
         )
 
@@ -612,7 +612,7 @@ def _model_features(model):
 
     if grade_related:
         raise ValueError(
-            "The loaded XGBoost model still contains "
+            "The loaded LightGBM model still contains "
             "grade/sub_grade-related features: "
             f"{grade_related}. "
             "Retrain the model without these features."
@@ -627,7 +627,7 @@ def _model_features(model):
 
 def build_model_input(applicant_data, model=None):
     """
-    Construct the complete applicant-specific XGBoost vector.
+    Construct the complete applicant-specific LightGBM vector.
 
     Returns
     -------
@@ -816,7 +816,7 @@ def build_model_input(applicant_data, model=None):
     if missing:
         raise ValueError(
             "Could not construct a complete "
-            "applicant-specific XGBoost vector. "
+            "applicant-specific LightGBM vector. "
             f"Missing model features: {missing}"
         )
 

@@ -1,5 +1,5 @@
 """
-Applicant-level SHAP explanation for the XGBoost loan default model.
+Applicant-level SHAP explanation for the LightGBM loan default model.
 
 Flow:
     Applicant Form
@@ -8,7 +8,7 @@ Flow:
           ↓
     Complete applicant model vector
           ↓
-       XGBoost
+       LightGBM
           ↓
     Default probability
           ↓
@@ -17,7 +17,7 @@ Flow:
     Applicant-specific explanation
 
 Important:
-- SHAP receives the EXACT vector given to XGBoost.
+- SHAP receives the EXACT vector given to LightGBM.
 - No median/reference-profile imputation is performed here.
 - grade and sub_grade must NOT be model features.
 """
@@ -32,7 +32,7 @@ import joblib
 import numpy as np
 import pandas as pd
 import shap
-import xgboost
+import lightgbm
 
 
 # ============================================================
@@ -41,7 +41,7 @@ import xgboost
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 
-MODEL_PATH = ROOT_DIR / "models" / "xgboost.pkl"
+MODEL_PATH = ROOT_DIR / "models" / "lightgbm.pkl"
 REPORTS_DIR = ROOT_DIR / "reports"
 
 LOCAL_JSON_PATH = REPORTS_DIR / "shap_local_explanation.json"
@@ -119,24 +119,24 @@ DISPLAY_NAMES = {
 @lru_cache(maxsize=1)
 def get_model():
     """
-    Load the trained XGBoost model once.
+    Load the trained LightGBM model once.
     """
 
     if not MODEL_PATH.exists():
         raise FileNotFoundError(
-            f"XGBoost model not found at:\n{MODEL_PATH}"
+            f"LightGBM model not found at:\n{MODEL_PATH}"
         )
 
     try:
         model = joblib.load(MODEL_PATH)
     except Exception as error:
         raise RuntimeError(
-            f"Could not load XGBoost model: {error}"
+            f"Could not load LightGBM model: {error}"
         ) from error
 
-    if not isinstance(model, xgboost.XGBClassifier):
+    if not isinstance(model, lightgbm.LGBMClassifier):
         raise TypeError(
-            f"Expected XGBClassifier, got {type(model).__name__}"
+            f"Expected LGBMClassifier, got {type(model).__name__}"
         )
 
     if not hasattr(model, "feature_names_in_"):
@@ -160,7 +160,7 @@ def get_model():
 @lru_cache(maxsize=1)
 def get_explainer():
     """
-    Create a TreeExplainer for the trained XGBoost model.
+    Create a TreeExplainer for the trained LightGBM model.
     """
 
     model = get_model()
@@ -178,7 +178,7 @@ def get_class_one_shap_values(shap_output, sample_count, feature_count):
 
     Class 1 = Default.
 
-    Supports different SHAP/XGBoost output formats.
+    Supports different SHAP/LightGBM output formats.
     """
 
     if hasattr(shap_output, "values"):
@@ -368,7 +368,7 @@ def create_factor(feature, value, shap_value):
 
 def explain_applicant(applicant_data, model_input=None, normalized_applicant=None):
     """
-    Generate an applicant-specific XGBoost prediction
+    Generate an applicant-specific LightGBM prediction
     and SHAP explanation.
 
     applicant_data:
@@ -378,7 +378,7 @@ def explain_applicant(applicant_data, model_input=None, normalized_applicant=Non
         Dictionary containing:
 
         - applicant input
-        - XGBoost prediction
+        - LightGBM prediction
         - default probability
         - SHAP explanation
     """
@@ -410,7 +410,7 @@ def explain_applicant(applicant_data, model_input=None, normalized_applicant=Non
 
     if forbidden_used:
         raise ValueError(
-            "The loaded XGBoost model still contains forbidden "
+            "The loaded LightGBM model still contains forbidden "
             f"features: {forbidden_used}. "
             "Retrain the model without grade/sub_grade."
         )
@@ -438,7 +438,7 @@ def explain_applicant(applicant_data, model_input=None, normalized_applicant=Non
 
         raise ValueError(
             "Applicant model input columns do not match "
-            "XGBoost feature order."
+            "LightGBM feature order."
         )
 
     # --------------------------------------------------------
@@ -466,7 +466,7 @@ def explain_applicant(applicant_data, model_input=None, normalized_applicant=Non
         )
 
     # ========================================================
-    # XGBOOST PREDICTION
+    # LIGHTGBM PREDICTION
     # ========================================================
 
     prediction = int(
@@ -759,7 +759,7 @@ def print_explanation(result):
     )
 
     print(
-        "Same applicant vector used by XGBoost and SHAP: True"
+        "Same applicant vector used by LightGBM and SHAP: True"
     )
 
     print()
