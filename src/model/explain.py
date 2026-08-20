@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 # CONFIGURATION
 # ============================================================
 
-MODEL_PATH = "models/xgboost.pkl"
-PREDICTIONS_PATH = "reports/xgboost_predictions.csv"
+MODEL_PATH = "models/lightgbm.pkl"
+PREDICTIONS_PATH = "reports/lightgbm_predictions.csv"
 
 REPORTS_DIR = "reports"
 
@@ -49,10 +49,10 @@ os.makedirs(REPORTS_DIR, exist_ok=True)
 
 
 # ============================================================
-# 1. LOAD XGBOOST MODEL
+# 1. LOAD LGBMOOST MODEL
 # ============================================================
 
-print("Loading XGBoost model...")
+print("Loading LightGBM model...")
 
 model = joblib.load(MODEL_PATH)
 
@@ -79,10 +79,10 @@ print("Columns:", len(predictions.columns))
 # ============================================================
 
 # IMPORTANT:
-# Use the feature names stored inside the XGBoost model.
+# Use the feature names stored inside the LightGBM model.
 #
 # This guarantees that SHAP receives exactly the same
-# features and order that XGBoost expects.
+# features and order that LightGBM expects.
 
 feature_names = list(
     model.feature_names_in_
@@ -98,7 +98,7 @@ print(feature_names)
 # 4. CREATE X INPUT FOR SHAP
 # ============================================================
 
-# Only take the 52 features used by XGBoost.
+# Only take the 52 features used by LightGBM.
 #
 # Do NOT include:
 # actual_default
@@ -180,7 +180,7 @@ print(
 # 8. HANDLE SHAP OUTPUT
 # ============================================================
 
-# For binary XGBoost classification, SHAP normally
+# For binary LightGBM classification, SHAP normally
 # returns:
 #
 #     samples × features
@@ -570,7 +570,7 @@ plt.ylabel(
 )
 
 plt.title(
-    f"Why XGBoost predicted "
+    f"Why LightGBM predicted "
     f"{prediction_label}"
 )
 

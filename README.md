@@ -105,7 +105,7 @@ Used as a baseline model because it is simple and relatively interpretable.
 
 Used to capture nonlinear relationships between financial features.
 
-### 3. XGBoost
+### 3. LightGBM
 
 Used as a powerful gradient-boosting model for structured/tabular data.
 
@@ -241,7 +241,7 @@ Risk Factors:
 | Data Processing      | Pandas, NumPy       |
 | Visualization        | Matplotlib, Seaborn |
 | Machine Learning     | Scikit-learn        |
-| Gradient Boosting    | XGBoost             |
+| Gradient Boosting    | LightGBM             |
 | Imbalance Handling   | imbalanced-learn    |
 | Explainable AI       | SHAP / LIME         |
 | Dashboard            | Streamlit           |
