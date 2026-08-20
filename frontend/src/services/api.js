@@ -17,9 +17,24 @@ function apiUrl(path) {
   return `${ensureApiUrl()}${path}`;
 }
 
-async function readResponse(response) {
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(data.detail || 'The assessment could not be completed.');
+async function readResponse(response, requestDetails = {}) {
+  const body = await response.text();
+  let data = {};
+  try {
+    data = JSON.parse(body || '{}');
+  } catch {
+    data = {};
+  }
+  if (!response.ok) {
+    if (requestDetails.label) {
+      console.error(`[${requestDetails.label}] HTTP error`, {
+        url: requestDetails.url,
+        status: response.status,
+        body,
+      });
+    }
+    throw new Error(data.detail || 'The assessment could not be completed.');
+  }
   return data;
 }
 
@@ -37,4 +52,14 @@ export async function fetchApplications() {
 
 export async function fetchDashboard() {
   return readResponse(await fetch(apiUrl('/api/dashboard')));
+}
+
+export async function fetchFairness() {
+  const url = apiUrl('/api/fairness');
+  try {
+    return await readResponse(await fetch(url), { label: 'Fairness API', url });
+  } catch (error) {
+    console.error('[Fairness API] Request failed', { url, error: error.message });
+    throw error;
+  }
 }

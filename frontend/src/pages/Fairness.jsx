@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { AlertTriangle, RefreshCw, ShieldCheck } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import PageHeader from '../components/PageHeader';
+import { fetchFairness } from '../services/api';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 const percent = value => `${(value * 100).toFixed(1)}%`;
 const tooltipFormatter = value => [percent(value), 'Rate'];
 
@@ -16,9 +16,7 @@ export default function Fairness() {
 		let active = true;
 		async function loadMetrics() {
 			try {
-				const response = await fetch(`${API_URL}/api/fairness`);
-				if (!response.ok) throw new Error('Fairness metrics could not be loaded.');
-				const data = await response.json();
+				const data = await fetchFairness();
 				const formattedData = Array.isArray(data)
 					? data.map(row => ({
 						state_group: row.state_group,

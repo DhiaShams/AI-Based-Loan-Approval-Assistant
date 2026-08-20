@@ -14,7 +14,7 @@
     "react": "latest",
     "react-dom": "latest",
     "react-router-dom": "latest",
-    "recharts": "latest"
+    "recharts": "^3.10.1"
   },
   "devDependencies": {
     "vite": "^8.2.1"
