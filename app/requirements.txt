@@ -1,2 +1,8 @@
 streamlit>=1.36
 Pillow
+pandas
+numpy
+scikit-learn
+joblib
+lightgbm
+shap
