@@ -1,5 +1,7 @@
 const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
-const API_URL = configuredApiUrl ? configuredApiUrl.replace(/\/$/, '') : null;
+const API_URL = configuredApiUrl
+  ? configuredApiUrl.replace(/\/$/, '')
+  : (import.meta.env.DEV ? 'http://127.0.0.1:8000' : null);
 
 function ensureApiUrl() {
   if (!API_URL) {
