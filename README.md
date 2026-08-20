@@ -2,7 +2,7 @@
 
 ## React + FastAPI frontend
 
-The full-stack application uses the existing Python/XGBoost/SHAP pipeline
+The full-stack application uses the existing Python/LightGBM/SHAP pipeline
 through FastAPI:
 
 ```powershell

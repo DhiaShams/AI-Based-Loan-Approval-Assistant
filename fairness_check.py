@@ -6,7 +6,7 @@ from fairlearn.metrics import (
 from sklearn.metrics import accuracy_score, recall_score, precision_score
 
 # ---- Load data ----
-preds = pd.read_csv("reports/xgboost_predictions.csv")
+preds = pd.read_csv("reports/lightgbm_predictions.csv")
 fairness_ref = pd.read_csv("data/processed/fairness_reference_v1.csv")
 
 # ---- Merge on shared row order/id ----

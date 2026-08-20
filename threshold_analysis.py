@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 # ---- Load model predictions ----
 # Expects a CSV with columns: y_true, predicted_probability
 # (probability of default, from model.predict_proba(X_test)[:, 1])
-predictions = pd.read_csv("reports/xgboost_predictions.csv")
+predictions = pd.read_csv("reports/lightgbm_predictions.csv")
 
 probs = predictions["default_probability"]
 y_true = predictions["actual_default"]
